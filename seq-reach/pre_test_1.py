@@ -113,7 +113,8 @@ def train():
     loss = dist.mean()
     optimizer.zero_grad()
     loss.backward()
-    # Gradients through the unrolled plant explode without a clip.
+    # Gradients may explode without a clip for an unrolled plant
+    # but effects of norm have to be further checked //TODO
     torch.nn.utils.clip_grad_norm_(policy.parameters(), max_norm=1.0)
     optimizer.step()
     losses.append(loss.item())
